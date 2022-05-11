@@ -47,14 +47,25 @@ public class BitArray {
     }
 
     public void swapHalfs() {
-        char[] tmp = new char[64];
-        System.arraycopy(array, 0, tmp, 32, 32);
-        System.arraycopy(array, 32, tmp, 0, 32);
-        array = tmp;
+        if (array.length % 2 != 0)
+            throw new IllegalArgumentException("Bei Arrays mit ungerader Bit-Zahl können die Hälften nicht getauscht werden");
+        int half = array.length / 2;
+        for (int i = 0; i < half; i++) {
+            char tmp = array[i];
+            array[i] = array[i + half];
+            array[i + half] = tmp;
+        }
     }
 
     public void setArray(char[] array) {
         this.array = array;
+    }
+
+    static BitArray mergeArrays(BitArray anfang, BitArray ende) {
+        char[] ret = new char[anfang.getLength() + ende.getLength()];
+        System.arraycopy(anfang.getArray(), 0, ret, 0, anfang.getLength());
+        System.arraycopy(ende.getArray(), 0, ret, anfang.getLength(), ende.getLength());
+        return new BitArray(ret);
     }
 
     public void setBit(char bit, int position) {

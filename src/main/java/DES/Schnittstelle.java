@@ -1,5 +1,6 @@
 package DES;
 
+import static DES.BitArray.*;
 import static DES.Des.*;
 import static DES.Funktionen.*;
 import static DES.RoundKeyGen.*;
@@ -104,6 +105,16 @@ public class Schnittstelle {
         return new Des(doIP(text).getArray(), key.getArray(), entschluesseln);
     }
 
+    public static RoundKeyGen getRoundKeyGenerator(String key, boolean entschluesseln) {
+        if (key == null) throw new IllegalArgumentException("Parameter dürfen nicht null sein");
+        return getRoundKeyGenerator(hexStringToBitArray(key), entschluesseln);
+    }
+
+    public static RoundKeyGen getRoundKeyGenerator(BitArray key, boolean entschluesseln) {
+        if (key == null) throw new IllegalArgumentException("Parameter dürfen nicht null sein");
+        return new RoundKeyGen(key.getArray(), entschluesseln);
+    }
+
     public static BitArray doIP(String input) {
         if (input == null) throw new IllegalArgumentException("Parameter dürfen nicht null sein");
         return doIP(hexStringToBitArray(input));
@@ -122,16 +133,6 @@ public class Schnittstelle {
     public static BitArray doIPrev(BitArray input) {
         if (input == null) throw new IllegalArgumentException("Parameter dürfen nicht null sein");
         return new BitArray(ip_rev(input.getArray()));
-    }
-
-    public static RoundKeyGen getRoundKeyGenerator(String key, boolean entschluesseln) {
-        if (key == null) throw new IllegalArgumentException("Parameter dürfen nicht null sein");
-        return getRoundKeyGenerator(hexStringToBitArray(key), entschluesseln);
-    }
-
-    public static RoundKeyGen getRoundKeyGenerator(BitArray key, boolean entschluesseln) {
-        if (key == null) throw new IllegalArgumentException("Parameter dürfen nicht null sein");
-        return new RoundKeyGen(key.getArray(), entschluesseln);
     }
 
     public static BitArray doPC1(String input) {
@@ -164,6 +165,16 @@ public class Schnittstelle {
         return new BitArray(e(input.getArray()));
     }
 
+    public static BitArray doS(String input) {
+        if (input == null) throw new IllegalArgumentException("Parameter dürfen nicht null sein");
+        return doS(hexStringToBitArray(input));
+    }
+
+    public static BitArray doS(BitArray input) {
+        if (input == null) throw new IllegalArgumentException("Parameter dürfen nicht null sein");
+        return new BitArray(s(input.getArray()));
+    }
+
     public static BitArray doP(String input) {
         if (input == null) throw new IllegalArgumentException("Parameter dürfen nicht null sein");
         return doP(hexStringToBitArray(input));
@@ -180,7 +191,8 @@ public class Schnittstelle {
     }
 
     public static BitArray fFunctionHalf(BitArray rightHalf, BitArray roundKey) {
-        if (rightHalf == null || roundKey == null) throw new IllegalArgumentException("Parameter dürfen nicht null sein");
+        if (rightHalf == null || roundKey == null)
+            throw new IllegalArgumentException("Parameter dürfen nicht null sein");
         return new BitArray(f(rightHalf.getArray(), roundKey.getArray()));
     }
 
@@ -191,5 +203,22 @@ public class Schnittstelle {
     public static BitArray doXor(BitArray text1, BitArray text2) {
         if (text1 == null || text2 == null) throw new IllegalArgumentException("Parameter dürfen nicht null sein");
         return new BitArray(xor(text1.getArray(), text2.getArray()));
+    }
+
+    public static BitArray doShift(String input, int round, boolean rechts) {
+        if (input == null) throw new IllegalArgumentException("Parameter dürfen nicht null sein");
+        return doShift(hexStringToBitArray(input), round, rechts);
+    }
+
+    public static BitArray doShift(BitArray input, int round, boolean rechts) {
+        if (input == null) throw new IllegalArgumentException("Parameter dürfen nicht null sein");
+        if (round < 1 || round > 16) throw new IllegalArgumentException("Round muss zwischen 1 <= round <= 16 liegen");
+        return new BitArray(shift(input.getArray(), round, rechts));
+    }
+
+    public static BitArray doMergeBitArrays(BitArray anfang, BitArray ende) {
+        if (anfang == null || ende == null)
+            throw new IllegalArgumentException("Parameter dürfen nicht null sein");
+        return mergeArrays(anfang, ende);
     }
 }

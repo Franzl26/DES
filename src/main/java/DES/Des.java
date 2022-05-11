@@ -44,7 +44,7 @@ public class Des {
         des.doIP();
         for (int i = 0; i < 16; i++) des.doNextRound();
 
-        des.switchSides();
+        des.swapHalfs();
         des.doIPrev();
         return des.text;
     }
@@ -68,6 +68,10 @@ public class Des {
         }
     }
 
+    public BitArray getCurrentText() {
+        return new BitArray(text);
+    }
+
     public void doIP() {
         text = ip(text);
     }
@@ -76,11 +80,12 @@ public class Des {
         text = ip_rev(text);
     }
 
-    public void switchSides() {
-        char[] tmp = text;
-        text = new char[64];
-        System.arraycopy(tmp, 0, text, 32, 32);
-        System.arraycopy(tmp, 32, text, 0, 32);
+    public void swapHalfs() {
+        for (int i = 0; i < 32; i++) {
+            char tmp = text[i];
+            text[i] = text[i + 32];
+            text[i + 32] = tmp;
+        }
     }
 
     static char[] ip(char[] input) {

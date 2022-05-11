@@ -40,11 +40,17 @@ class FFunktion {
     static char[] f(char[] cipherRight, char[] roundKey) {
         char[] expanded = e(cipherRight);
         char[] xored = xor(expanded, roundKey);
+        char[] sboxed = s(xored);
+
+        return p(sboxed);
+    }
+
+    static char[] s(char[] xored) {
         char[] sboxed = new char[32];
         for (int i = 0; i < 8; i++) {
-            int index =i * 6;
+            int index = i * 6;
             int input = 32 * xored[index] + 16 * xored[index + 5] + 8 * xored[index + 1] + 4 * xored[index + 2]
-                                + 2 * xored[index + 3] + xored[index + 4];
+                    + 2 * xored[index + 3] + xored[index + 4];
             int output = sBoxen[i][input];
             index = (char) (i * 4);
             sboxed[index + 3] = 5;
@@ -56,8 +62,7 @@ class FFunktion {
             output /= 2;
             sboxed[index] = (char) (output % 2);
         }
-
-        return p(sboxed);
+        return sboxed;
     }
 
 

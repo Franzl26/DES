@@ -12,27 +12,7 @@ public class RoundKeyGen {
     }
 
     char[] getNextKey() {
-        char[] newKey = new char[56];
-        int shift = 2;
-        if (entschluesseln) {
-            if (round == 1) shift = 0;
-            else if (round == 2 || round == 9 || round == 16) shift = 1;
-            // rechts Schieben linke Hälfte
-            System.arraycopy(key, 0, newKey, shift, 28 - shift);
-            System.arraycopy(key, 28 - shift, newKey, 0, shift);
-            // rechts Schieben rechte Hälfte
-            System.arraycopy(key, 28, newKey, 28 + shift, 28 - shift);
-            System.arraycopy(key, 56 - shift, newKey, 28, shift);
-        } else {
-            if (round == 1 || round == 2 || round == 9 || round == 16) shift = 1;
-            // links Schieben linke Hälfte
-            System.arraycopy(key, shift, newKey, 0, 28 - shift);
-            System.arraycopy(key, 0, newKey, 28 - shift, shift);
-            // links Schieben rechte Hälfte
-            System.arraycopy(key, shift + 28, newKey, 28, 28 - shift);
-            System.arraycopy(key, 28, newKey, 56 - shift, shift);
-        }
-        key = newKey;
+        key = shift(key, round, entschluesseln);
         round++;
         return pc2(key);
     }
@@ -40,6 +20,30 @@ public class RoundKeyGen {
     public BitArray nextKey() {
         if (round > 16) throw new TooManyRoundsException("Bei DES werden nur 16 Schlüsselrunden durchgeführt");
         return new BitArray(getNextKey());
+    }
+
+    static char[] shift(char[] input, int round, boolean rechts) {
+        char[] newKey = new char[56];
+        int shift = 2;
+        if (rechts) {
+            if (round == 1) shift = 0;
+            else if (round == 2 || round == 9 || round == 16) shift = 1;
+        // rechts Schieben linke Hälfte
+            System.arraycopy(input, 0, newKey, shift, 28 - shift);
+            System.arraycopy(input, 28 - shift, newKey, 0, shift);
+            // rechts Schieben rechte Hälfte
+            System.arraycopy(input, 28, newKey, 28 + shift, 28 - shift);
+            System.arraycopy(input, 56 - shift, newKey, 28, shift);
+        } else {
+            if (round == 1 || round == 2 || round == 9 || round == 16) shift = 1;
+            // links Schieben linke Hälfte
+            System.arraycopy(input, shift, newKey, 0, 28 - shift);
+            System.arraycopy(input, 0, newKey, 28 - shift, shift);
+            // links Schieben rechte Hälfte
+            System.arraycopy(input, shift + 28, newKey, 28, 28 - shift);
+            System.arraycopy(input, 28, newKey, 56 - shift, shift);
+        }
+        return newKey;
     }
 
     static char[] pc1(char[] input) {

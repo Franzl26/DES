@@ -1,7 +1,5 @@
 package DES;
 
-import java.util.Arrays;
-
 class Funktionen {
     static char[] hexString2arr(String string) {
         string = string.replaceAll(" ", "");

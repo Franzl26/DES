@@ -1,6 +1,6 @@
 package DES;
 
-public class TooManyRoundsException extends RuntimeException{
+public class TooManyRoundsException extends RuntimeException {
     public TooManyRoundsException() {
     }
 

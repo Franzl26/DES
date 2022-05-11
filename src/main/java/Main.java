@@ -6,20 +6,56 @@ public class Main {
     public static void main(String[] args) {
         test();
         // kryptoBlatt3();
+        des();
 
         String input = "C:/Users/f-luc/Downloads/start.txt";
         String output = "C:/Users/f-luc/Downloads/mitte.txt";
         String output2 = "C:/Users/f-luc/Downloads/ende.txt";
 
+        long start = System.currentTimeMillis();
         encryptFile(input, output, "0123456789abcdef");
+        long mitte = System.currentTimeMillis();
         decryptFile(output, output2, "0123456789abcdef");
+        long ende = System.currentTimeMillis();
+        System.out.println("Verschlüsseln: " + (mitte - start));
+        System.out.println("Entschlüsseln: " + (ende - mitte));
+    }
+
+    public static void des() {
+        String key = "0123456789abcdef";
+        String message = "E3E10C711C200024";
+
+        // Block
+        System.out.println("\nBlock: " + encryptBlock(message, key));
+
+        // Des Iterator
+        Des desIt = getDesIteratorWithoutIP(message, key, false);
+        desIt.doIP();
+        for (int i = 0; i < 16; i++) desIt.nextRound();
+        desIt.swapHalfs();
+        desIt.doIPrev();
+        System.out.println("With desIt: " + desIt.getCurrentText());
+
+        // Alles selbstständig
+        BitArray k = hexStringToBitArray(key);
+        BitArray m = hexStringToBitArray(message);
+        m = doIP(m);
+        k = doPC1(k);
+        for (int i = 1; i <= 16; i++) {
+            k = doShift(k, i, false);
+            BitArray newL = doXor(m.getLeftHalf(), doP(doS(doXor(doE(m.getRightHalf()), doPC2(k)))));
+            m = doMergeBitArrays(m.getRightHalf(), newL);
+        }
+        m.swapHalfs();
+        m = doIPrev(m);
+        System.out.println("Selbstständig: " + m);
     }
 
     public static void kryptoBlatt3() {
         // Aufgabe 3
         System.out.println("Aufgabe 3");
         RoundKeyGen keygen = getRoundKeyGenerator("264a57799bcbdf1f", false);
-        for (int i = 0; i <  16; i++) {
+        for (int i = 0; i < 16; i++) {
             System.out.println("roundKey " + i + ": " + keygen.nextKey());
         }
 
@@ -29,7 +65,7 @@ public class Main {
         RoundKeyGen k2 = getRoundKeyGenerator("FEFEFEFEFEFEFEFE", false);
         RoundKeyGen k3 = getRoundKeyGenerator("E0E0E0E0f1f1f1f1", false);
         RoundKeyGen k4 = getRoundKeyGenerator("1f1f1f1f0e0e0e0e", false);
-        for (int i = 0; i <  16; i++) {
+        for (int i = 0; i < 16; i++) {
             System.out.println(i + ": " + k1.nextKey() + " : " + k2.nextKey() + " : " + k3.nextKey() + " : " + k4.nextKey());
         }
 
@@ -62,9 +98,12 @@ public class Main {
         BitArray ec = decryptBlock(dc, key);
         System.out.println("Message: " + bitArrayToBinString(ec, true) + " = " + ec);
 
-        String input = "C:/Users/f-luc/Desktop/JavaProjects/DES/test.txt";
+        /*String input = "C:/Users/f-luc/Desktop/JavaProjects/DES/test.txt";
         String output = "C:/Users/f-luc/Desktop/JavaProjects/DES/versch.txt";
-        String output2 = "C:/Users/f-luc/Desktop/JavaProjects/DES/entsch.txt";
+        String output2 = "C:/Users/f-luc/Desktop/JavaProjects/DES/entsch.txt";*/
+        String input = "C:/Users/f-luc/Downloads/test.txt";
+        String output = "C:/Users/f-luc/Downloads/testo.txt";
+        String output2 = "C:/Users/f-luc/Downloads/testoo.txt";
 
         encryptFile(input, output, key);
         decryptFile(output, output2, key);

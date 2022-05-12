@@ -10,7 +10,7 @@ public class BitArray {
         if (!validate(array.length)) throw new IllegalArgumentException("Array ist kein BitArray");
     }
 
-    int getLength() {
+    int length() {
         return array.length;
     }
 
@@ -62,9 +62,9 @@ public class BitArray {
     }
 
     static BitArray mergeArrays(BitArray anfang, BitArray ende) {
-        char[] ret = new char[anfang.getLength() + ende.getLength()];
-        System.arraycopy(anfang.getArray(), 0, ret, 0, anfang.getLength());
-        System.arraycopy(ende.getArray(), 0, ret, anfang.getLength(), ende.getLength());
+        char[] ret = new char[anfang.length() + ende.length()];
+        System.arraycopy(anfang.getArray(), 0, ret, 0, anfang.length());
+        System.arraycopy(ende.getArray(), 0, ret, anfang.length(), ende.length());
         return new BitArray(ret);
     }
 

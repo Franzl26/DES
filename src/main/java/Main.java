@@ -4,119 +4,58 @@ import static DES.Schnittstelle.*;
 
 public class Main {
     public static void main(String[] args) {
-        test();
-        // kryptoBlatt3();
-        des();
-
-        String input = "C:/Users/f-luc/Downloads/start.txt";
-        String output = "C:/Users/f-luc/Downloads/mitte.txt";
-        String output2 = "C:/Users/f-luc/Downloads/ende.txt";
-
-        long start = System.currentTimeMillis();
-        encryptFile(input, output, "0123456789abcdef");
-        long mitte = System.currentTimeMillis();
-        decryptFile(output, output2, "0123456789abcdef");
-        long ende = System.currentTimeMillis();
-        System.out.println("Verschlüsseln: " + (mitte - start));
-        System.out.println("Entschlüsseln: " + (ende - mitte));
+        beispiele();
     }
 
-    public static void des() {
-        String key = "0123456789abcdef";
-        String message = "E3E10C711C200024";
+    public static void beispiele() {
+        // Daten/Bit-String werden in BitArrays zwischengespeichert
+        BitArray key;
+        BitArray message;
+        // Daten können entweder als Binär- oder als Hexadezimal-String eingegeben werden
+        // dabei sind auch Leerzeichen zugelassen, bei Hex ist groß und klein erlaubt
+        // nur Eingaben ganzer Bytes sind erlaubt, sonst kommt eine Fehlermeldung
+        key = hexStringToBitArray("0123456789abcdef");
+        message = binStringToBitArray("00000001 00100011 01000101 01100111 10001001 10101011 11001101 11101111");
 
-        // Block
-        System.out.println("\nBlock: " + encryptBlock(message, key));
+        // der Typ BitArray wird automatisch in einen Hex-String umgewandelt
+        // alternativ kann toString oder bitArrayToBinString/bitArrayToHexString aufgerufen werden
+        // hierbei können auch für die bessere Lesbarkeit Byte-Trenner aktiviert werden
+        System.out.println("key: " + key);
+        System.out.println("key: " + key.toString(16, true));
+        System.out.println("key: " + key.toString(2));
+        System.out.println("key: " + bitArrayToHexString(key));
+        System.out.println("key: " + bitArrayToBinString(key, true));
 
-        // Des Iterator
-        Des desIt = getDesIteratorWithoutIP(message, key, false);
-        desIt.doIP();
-        for (int i = 0; i < 16; i++) desIt.nextRound();
+        // Inputs für die einzelnen Funktionen sind entweder BitArrays
+        // oder Strings, optional mit Basis (default = 16)
+        // sollten die Längen der Inputs nicht stimmen, wird eine entsprechende Exception geworfen (hoffentlich)
+        BitArray cipher = encryptBlock(message, key);
+        cipher = encryptBlock("0123456789abcdef", "0123456789abcdef");
+        cipher = encryptBlock("00000001 00100011 01000101 01100111 10001001 10101011 11001101 11101111",
+                "00000001 00100011 01000101 01100111 10001001 10101011 11001101 11101111", 2);
+        System.out.println("cipher: " + cipher);
+
+        // Außerdem können RoundKey- und DES-Iteratoren erzeugt werden
+        // diese liefern dann bei jedem Aufruf den nächsten Rundenschlüssel/das Ergebnis der nächsten Runde
+        // DES-Iterator gibt es mit und ohne direkt angewandte IP, diese kann nachträglich mit .doIP() durchgeführt werden
+        Des desIt = getDesIteratorWithIP(message, key, false);
+        Des desIt2 = getDesIteratorWithoutIP(message, key, false);
+        RoundKeyGen keyGen = getRoundKeyGenerator(key, false);
+        desIt2.doIP();
+        for (int i = 1; i < 17; i++) {
+            System.out.println("Runde " + i + " key: " + keyGen.nextKey()
+                    + ", Rundenergebnis: " + desIt.nextRound());
+        }
+        // dann können noch die Hälften zurückgetauscht und IP^-1 durchgeführt werden und man erhält den cipher-text
         desIt.swapHalfs();
         desIt.doIPrev();
-        System.out.println("With desIt: " + desIt.getCurrentText());
+        System.out.println("cipher: " + desIt.getCurrentText());
 
-        // Alles selbstständig
-        BitArray k = hexStringToBitArray(key);
-        BitArray m = hexStringToBitArray(message);
-        m = doIP(m);
-        k = doPC1(k);
-        for (int i = 1; i <= 16; i++) {
-            k = doShift(k, i, false);
-            BitArray newL = doXor(m.getLeftHalf(), doP(doS(doXor(doE(m.getRightHalf()), doPC2(k)))));
-            m = doMergeBitArrays(m.getRightHalf(), newL);
-        }
-        m.swapHalfs();
-        m = doIPrev(m);
-        System.out.println("Selbstständig: " + m);
-    }
+        // außerdem können mit do... alle Schritte einzeln durchgeführt werden
+        // dabei sind die Eingabelängen zu beachten, die aber ggf. eine passende Exception werfen sollten
+        BitArray show = doE("12345678");
+        show = doS("12345678abcd");
 
-    public static void kryptoBlatt3() {
-        // Aufgabe 3
-        System.out.println("Aufgabe 3");
-        RoundKeyGen keygen = getRoundKeyGenerator("264a57799bcbdf1f", false);
-        for (int i = 0; i < 16; i++) {
-            System.out.println("roundKey " + i + ": " + keygen.nextKey());
-        }
-
-        // Aufgabe 4
-        System.out.println("\nAufgabe 4");
-        RoundKeyGen k1 = getRoundKeyGenerator("0101010101010101", false);
-        RoundKeyGen k2 = getRoundKeyGenerator("FEFEFEFEFEFEFEFE", false);
-        RoundKeyGen k3 = getRoundKeyGenerator("E0E0E0E0f1f1f1f1", false);
-        RoundKeyGen k4 = getRoundKeyGenerator("1f1f1f1f0e0e0e0e", false);
-        for (int i = 0; i < 16; i++) {
-            System.out.println(i + ": " + k1.nextKey() + " : " + k2.nextKey() + " : " + k3.nextKey() + " : " + k4.nextKey());
-        }
-
-        // Aufgabe 5
-        System.out.println("\nAufgabe 5");
-        RoundKeyGen k = getRoundKeyGenerator("133457799BBcdff1", false);
-        BitArray half = fFunctionHalf(hexStringToBitArray("f0aaf0aa"), k.nextKey());
-        System.out.println("Linke Hälfte: " + doXor(half, hexStringToBitArray("cf4b6544")));
-        Des d = getDesIteratorWithIP("1123456789EBCDEF", "133457799bbcdff1", false);
-        BitArray b = d.nextRound();
-        System.out.println("Test: " + b + " = " + bitArrayToBinString(b, true));
-        System.out.println("IP-1(m): " + doIPrev(hexStringToBitArray("ec01ccfff0aaf0aa")));
-
-
-        // Aufgabe 6
-        System.out.println("\nAufgabe 6");
-        Des d2 = getDesIteratorWithIP("58554959484d424c", "123556799abddef1", false);
-        BitArray b2 = d2.nextRound();
-        System.out.println(b2 + " = " + bitArrayToBinString(b2, true));
-    }
-
-    public static void test() {
-        BitArray key = hexStringToBitArray("0123456789abcdef");
-        System.out.println("key    : " + key.toString(2, true) + " = " + key);
-        // BitArray m = hexString2arr("1555c98c01ddff0c");
-        BitArray m = hexStringToBitArray("E3E10C711C200024");
-        System.out.println("Message: " + bitArrayToBinString(m, true) + " = " + m);
-        BitArray dc = encryptBlock(m, key);
-        System.out.println("Cipher : " + bitArrayToBinString(dc, true) + " = " + dc);
-        BitArray ec = decryptBlock(dc, key);
-        System.out.println("Message: " + bitArrayToBinString(ec, true) + " = " + ec);
-
-        /*String input = "C:/Users/f-luc/Desktop/JavaProjects/DES/test.txt";
-        String output = "C:/Users/f-luc/Desktop/JavaProjects/DES/versch.txt";
-        String output2 = "C:/Users/f-luc/Desktop/JavaProjects/DES/entsch.txt";*/
-        String input = "C:/Users/f-luc/Downloads/test.txt";
-        String output = "C:/Users/f-luc/Downloads/testo.txt";
-        String output2 = "C:/Users/f-luc/Downloads/testoo.txt";
-
-        encryptFile(input, output, key);
-        decryptFile(output, output2, key);
-
-        Des des = getDesIteratorWithoutIP(doIP(m), key, false);
-        RoundKeyGen keyGen = getRoundKeyGenerator(key, false);
-        BitArray d = null;
-        for (int i = 0; i < 16; i++) {
-            d = des.nextRound();
-            BitArray k = keyGen.nextKey();
-            System.out.println("key: " + k + ", round: " + d);
-        }
-        d.swapHalfs();
-        System.out.println(doIPrev(d));
+        // außerdem gehen noch ein paar andere tolle Dinge für die es keine Beispiele gibt
     }
 }

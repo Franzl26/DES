@@ -57,22 +57,11 @@ public class BitArray {
         }
     }
 
-    public void setArray(char[] array) {
-        this.array = array;
-    }
-
     static BitArray mergeArrays(BitArray anfang, BitArray ende) {
         char[] ret = new char[anfang.length() + ende.length()];
         System.arraycopy(anfang.getArray(), 0, ret, 0, anfang.length());
         System.arraycopy(ende.getArray(), 0, ret, anfang.length(), ende.length());
         return new BitArray(ret);
-    }
-
-    public void setBit(char bit, int position) {
-        if (bit != 0 && bit != 1) throw new IllegalArgumentException("Bit darf nur 0 oder 1 sein");
-        if (position < 0 || position >= array.length)
-            throw new IllegalArgumentException("Position außerhalb des arrays");
-        array[position] = bit;
     }
 
     boolean validate(int length) {

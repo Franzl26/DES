@@ -28,7 +28,7 @@ public class RoundKeyGen {
         if (rechts) {
             if (round == 1) shift = 0;
             else if (round == 2 || round == 9 || round == 16) shift = 1;
-        // rechts Schieben linke Hälfte
+            // rechts Schieben linke Hälfte
             System.arraycopy(input, 0, newKey, shift, 28 - shift);
             System.arraycopy(input, 28 - shift, newKey, 0, shift);
             // rechts Schieben rechte Hälfte

@@ -4,9 +4,9 @@ import static DES.Schnittstelle.*;
 
 public class Main {
     public static void main(String[] args) {
-        beispiele();
+        //beispiele();
         aufgabe5Krypto();
-        kryptoBlatt3();
+        //kryptoBlatt3();
     }
 
     public static void beispiele() {

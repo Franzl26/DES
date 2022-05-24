@@ -7,7 +7,6 @@ public class Main {
         beispiele();
         aufgabe5Krypto();
         kryptoBlatt3();
-        // test Kommentar
     }
 
     public static void beispiele() {
@@ -70,25 +69,25 @@ public class Main {
         BitArray cipherRight = cipher.getRightHalf();
 
         key = doPC1(key);
-        System.out.println("Key nach PC1: " + key.toString(2, true));
+        System.out.println("Key nach PC1  : " + key.toString(2, true));
         key = doShift(key, 1, false);
         System.out.println("Key nach shift: " + key.toString(2, true));
         key = doPC2(key);
-        System.out.println("Key nach PC2: " + key.toString(2, true));
+        System.out.println("Key nach PC2  : " + key.toString(2, true));
         BitArray fFunc = doE(cipherLeft);
-        System.out.println("nach expand: " + key.toString(2, true));
+        System.out.println("nach expand   : " + key.toString(2, true));
         fFunc = doXor(key, fFunc);
-        System.out.println("nach xor: " + fFunc.toString(2, true));
+        System.out.println("nach xor      : " + fFunc.toString(2, true));
         fFunc = doS(fFunc);
-        System.out.println("nach sBox: " + fFunc.toString(2, true));
+        System.out.println("nach sBox     : " + fFunc.toString(2, true));
         fFunc = doP(fFunc);
-        System.out.println("nach P: " + fFunc.toString(2, true));
+        System.out.println("nach P        : " + fFunc.toString(2, true));
         fFunc = doXor(fFunc, cipherRight);
-        System.out.println("nach xor: " + fFunc.toString(2, true));
+        System.out.println("nach xor      : " + fFunc.toString(2, true));
         BitArray ergebnis = doMergeBitArrays(fFunc, cipherLeft);
-        System.out.println("nach merge: " + ergebnis.toString(2, true));
+        System.out.println("nach merge    : " + ergebnis.toString(2, true));
         ergebnis = doIPrev(ergebnis);
-        System.out.println("Klartext: " + ergebnis.toString(2, true) + " = " + ergebnis);
+        System.out.println("Klartext      : " + ergebnis.toString(2, true) + " = " + ergebnis);
     }
 
     public static void kryptoBlatt3() {

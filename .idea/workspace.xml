@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="920d1dbe-0b4a-4453-8a9a-862350cbe7ff" name="Changes" comment="Lösungen für Kryptografie-Blatt 3">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="920d1dbe-0b4a-4453-8a9a-862350cbe7ff" name="Changes" comment="Test für Tom">
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,6 +112,7 @@
       <workItem from="1652540779147" duration="896000" />
       <workItem from="1652681084639" duration="600000" />
       <workItem from="1652714432210" duration="1509000" />
+      <workItem from="1653419029153" duration="716000" />
     </task>
     <task id="LOCAL-00001" summary="Test Commit">
       <created>1651952172163</created>
@@ -141,7 +142,14 @@
       <option name="project" value="LOCAL" />
       <updated>1652387879533</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Test für Tom">
+      <created>1653419310947</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1653419310947</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -183,7 +191,8 @@
     <MESSAGE value="Start" />
     <MESSAGE value="Schnittstelle Update und Beispiele" />
     <MESSAGE value="Lösungen für Kryptografie-Blatt 3" />
-    <option name="LAST_COMMIT_MESSAGE" value="Lösungen für Kryptografie-Blatt 3" />
+    <MESSAGE value="Test für Tom" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test für Tom" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

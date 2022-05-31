@@ -75,7 +75,7 @@ public class Main {
         key = doPC2(key);
         System.out.println("Key nach PC2  : " + key.toString(2, true));
         BitArray fFunc = doE(cipherLeft);
-        System.out.println("nach expand   : " + key.toString(2, true));
+        System.out.println("nach expand   : " + fFunc.toString(2, true));
         fFunc = doXor(key, fFunc);
         System.out.println("nach xor      : " + fFunc.toString(2, true));
         fFunc = doS(fFunc);

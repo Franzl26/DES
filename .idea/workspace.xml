@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="920d1dbe-0b4a-4453-8a9a-862350cbe7ff" name="Changes" comment="Test für Tom">
+    <list default="true" id="920d1dbe-0b4a-4453-8a9a-862350cbe7ff" name="Changes" comment="ordentlich">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -112,7 +113,10 @@
       <workItem from="1652540779147" duration="896000" />
       <workItem from="1652681084639" duration="600000" />
       <workItem from="1652714432210" duration="1509000" />
-      <workItem from="1653419029153" duration="716000" />
+      <workItem from="1653419029153" duration="1092000" />
+      <workItem from="1653993583222" duration="793000" />
+      <workItem from="1654003662316" duration="5000" />
+      <workItem from="1654005238153" duration="648000" />
     </task>
     <task id="LOCAL-00001" summary="Test Commit">
       <created>1651952172163</created>
@@ -149,7 +153,21 @@
       <option name="project" value="LOCAL" />
       <updated>1653419310947</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="ordentlich">
+      <created>1653419780994</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1653419780994</updated>
+    </task>
+    <task id="LOCAL-00007" summary="ordentlich">
+      <created>1653419869237</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1653419869237</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -192,7 +210,8 @@
     <MESSAGE value="Schnittstelle Update und Beispiele" />
     <MESSAGE value="Lösungen für Kryptografie-Blatt 3" />
     <MESSAGE value="Test für Tom" />
-    <option name="LAST_COMMIT_MESSAGE" value="Test für Tom" />
+    <MESSAGE value="ordentlich" />
+    <option name="LAST_COMMIT_MESSAGE" value="ordentlich" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
